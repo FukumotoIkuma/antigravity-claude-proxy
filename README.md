@@ -39,10 +39,10 @@ A proxy server that exposes an **Anthropic-compatible API** backed by **Antigrav
 
 ```bash
 # Run directly with npx (no install needed)
-npx antigravity-claude-proxy start
+npx antigravity-claude-proxy@latest start
 
 # Or install globally
-npm install -g antigravity-claude-proxy
+npm install -g antigravity-claude-proxy@latest
 antigravity-claude-proxy start
 ```
 
@@ -69,14 +69,16 @@ If you have Antigravity installed and logged in, the proxy will automatically ex
 
 **Option B: Add Google Accounts via OAuth (Recommended for Multi-Account)**
 
-Add one or more Google accounts for load balancing:
+Add one or more Google accounts for load balancing.
+
+#### Desktop/Laptop (with browser)
 
 ```bash
 # If installed via npm
 antigravity-claude-proxy accounts add
 
 # If using npx
-npx antigravity-claude-proxy accounts add
+npx antigravity-claude-proxy@latest accounts add
 
 # If cloned locally
 npm run accounts:add
@@ -84,7 +86,22 @@ npm run accounts:add
 
 This opens your browser for Google OAuth. Sign in and authorize access. Repeat for multiple accounts.
 
-Manage accounts:
+#### Headless Server (Docker, SSH, no desktop)
+
+```bash
+# If installed via npm
+antigravity-claude-proxy accounts add --no-browser
+
+# If using npx
+npx antigravity-claude-proxy@latest accounts add -- --no-browser
+
+# If cloned locally
+npm run accounts:add -- --no-browser
+```
+
+This displays an OAuth URL you can open on another device (phone/laptop). After signing in, copy the redirect URL or authorization code and paste it back into the terminal.
+
+#### Manage accounts
 
 ```bash
 # List all accounts
@@ -104,7 +121,7 @@ antigravity-claude-proxy accounts
 antigravity-claude-proxy start
 
 # If using npx
-npx antigravity-claude-proxy start
+npx antigravity-claude-proxy@latest start
 
 # If cloned locally
 npm start
@@ -144,11 +161,14 @@ Add this configuration:
     "ANTHROPIC_MODEL": "claude-opus-4-5-thinking",
     "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-5-thinking",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-5-thinking",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-sonnet-4-5",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "claude-sonnet-4-5-thinking"
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "gemini-2.5-flash-lite[1m]",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "claude-sonnet-4-5-thinking",
+    "ENABLE_EXPERIMENTAL_MCP_CLI": "true"
   }
 }
 ```
+
+(Please use **gemini-2.5-flash-lite** as the default haiku model, even if others are claude, as claude code makes several calls via the haiku model for background tasks. If you use claude model for it, you may use you claude usage sooner)
 
 Or to use Gemini models:
 
@@ -157,11 +177,12 @@ Or to use Gemini models:
   "env": {
     "ANTHROPIC_AUTH_TOKEN": "test",
     "ANTHROPIC_BASE_URL": "http://localhost:8080",
-    "ANTHROPIC_MODEL": "gemini-3-pro-high",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "gemini-3-pro-high",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "gemini-3-flash",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "gemini-2.5-flash-lite",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "gemini-3-flash"
+    "ANTHROPIC_MODEL": "gemini-3-pro-high[1m]",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "gemini-3-pro-high[1m]",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "gemini-3-flash[1m]",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "gemini-2.5-flash-lite[1m]",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "gemini-3-flash[1m]",
+    "ENABLE_EXPERIMENTAL_MCP_CLI": "true"
   }
 }
 ```
@@ -174,7 +195,7 @@ Add the proxy settings to your shell profile:
 
 ```bash
 echo 'export ANTHROPIC_BASE_URL="http://localhost:8080"' >> ~/.zshrc
-echo 'export ANTHROPIC_API_KEY="test"' >> ~/.zshrc
+echo 'export ANTHROPIC_AUTH_TOKEN="test"' >> ~/.zshrc
 source ~/.zshrc
 ```
 
@@ -184,7 +205,7 @@ source ~/.zshrc
 
 ```powershell
 Add-Content $PROFILE "`n`$env:ANTHROPIC_BASE_URL = 'http://localhost:8080'"
-Add-Content $PROFILE "`$env:ANTHROPIC_API_KEY = 'test'"
+Add-Content $PROFILE "`$env:ANTHROPIC_AUTH_TOKEN = 'test'"
 . $PROFILE
 ```
 
@@ -192,7 +213,7 @@ Add-Content $PROFILE "`$env:ANTHROPIC_API_KEY = 'test'"
 
 ```cmd
 setx ANTHROPIC_BASE_URL "http://localhost:8080"
-setx ANTHROPIC_API_KEY "test"
+setx ANTHROPIC_AUTH_TOKEN "test"
 ```
 
 Restart your terminal for changes to take effect.
@@ -383,4 +404,4 @@ MIT
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=badri-s2001/antigravity-claude-proxy&type=date&legend=top-left&cache-control=no-cache)](https://www.star-history.com/#badri-s2001/antigravity-claude-proxy&type=date&legend=top-left)
+[![Star History Chart](https://api.star-history.com/svg?repos=badrisnarayanan/antigravity-claude-proxy&type=date&legend=top-left&cache-control=no-cache)](https://www.star-history.com/#badrisnarayanan/antigravity-claude-proxy&type=date&legend=top-left)
